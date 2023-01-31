@@ -1,6 +1,7 @@
 const chai = require('chai');
 const expect = chai.expect;
 
+const Card = require('../src/Card');
 const Turn = require('../src/Turn');
 
 describe('Turn', () => {
@@ -10,12 +11,7 @@ describe('Turn', () => {
 
     beforeEach(() => {
         guess = 'array';
-        card = {
-            "id": 1,
-            "question": "What allows you to define a set of related information using key-value pairs?",
-            "answers": ["object", "array", "function"],
-            "correctAnswer": "object"
-          };
+        card = new Card(1, "What allows you to define a set of related information using key-value pairs?", ["object", "array", "function"], "object");
         turn = new Turn(guess, card);
     });
 
