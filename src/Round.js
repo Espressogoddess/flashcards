@@ -15,7 +15,6 @@ class Round {
         let turn = new Turn(guess, this.currentCard);
         this.turnCount++;
         turn.evaluateGuess();
-        turn.giveFeedback();
         if (turn.evaluateGuess()) {
             this.correctGuessIds.push(this.currentCard.id);
         }
@@ -23,15 +22,20 @@ class Round {
             this.incorrectGuessIds.push(this.currentCard.id);
         }
         this.currentCard = this.deck[this.turnCount]
+        return turn.giveFeedback();
     }
     calculatePercentageCorrect() {
         if(this.correctGuessIds.length === 0) {
-            return '0%'
+            return '0%';
         }
         else {
         let fraction = ((this.correctGuessIds.length) / (this.turnCount));
-        return `${(fraction * 100).toFixed(0)}%`
+        return `${(fraction * 100).toFixed(0)}%`;
         }
+    }
+    endRound() {
+        let percentCorrect = this.calculatePercentageCorrect();
+        console.log(`**Round over!** You answered ${percentCorrect} of the questions correctly!`);
     }
 }
 module.exports = Round;

@@ -84,7 +84,7 @@ describe('Round', () => {
 
     it('should evaluate guess if incorrect', () => {
         round.takeTurn('otter');
-        
+
         assert.deepEqual(round.incorrectGuessIds, [1]);
         assert.deepEqual(round.correctGuessIds, []);
     });
@@ -132,6 +132,28 @@ describe('Round', () => {
 
         assert.equal(round.calculatePercentageCorrect(), '67%');
 
-    })
+    });
+
+    it('should be able to end a round with no correct answers', () => {
+        round.takeTurn('array');
+        round.takeTurn('object');
+
+        assert.equal(round.endRound(), '**Round over!** You answered 0% of the questions correctly!');
+    });
+
+    it('should be able to end a round with all correct answers', () => {
+        round.takeTurn('object');
+        round.takeTurn('array');
+
+        assert.equal(round.endRound(), '**Round over!** You answered 100% of the questions correctly!');
+    });
+
+    it('should be able to end a round with some correct answers', () => {
+        round.takeTurn('object');
+        round.takeTurn('array');
+        round.takeTurn('array')
+
+        assert.equal(console.log(round.endRound()), '**Round over!** You answered 67% of the questions correctly!');
+    });
 
 });
