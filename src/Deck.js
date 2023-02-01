@@ -1,9 +1,10 @@
-const Card = require('./Card.js');
-const {prototypeData} = require('./data.js')
-
 class Deck {
-    constructor({prototypeData}) {
-        console.log('hi')
-        console.log({prototypeData})
+    constructor(cards) {
+        this.cards = cards;
+    }
+    countCards() {
+        return this.cards.length;
     }
 }
+
+module.exports = Deck;
