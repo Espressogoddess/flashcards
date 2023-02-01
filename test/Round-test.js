@@ -11,6 +11,7 @@ describe('Round', () => {
     let card3;
     let deck;
     let round;
+
     beforeEach(() => {
         card1 = new Card(1, "What allows you to define a set of related information using key-value pairs?", ["object", "array", "function"], "object");
         card2 = new Card(2, "What is a comma-separated list of related values?", ["array", "object", "function"], "array");
@@ -40,7 +41,7 @@ describe('Round', () => {
         ]);
     });
 
-    it('should store the current card as the first card in the deck', () => {
+    it('should have a current card', () => {
         assert.deepEqual(round.currentCard, {
             id: 1,
             question: "What allows you to define a set of related information using key-value pairs?",
@@ -48,5 +49,89 @@ describe('Round', () => {
             correctAnswer: "object"
           });
     });
-}
-);
+
+    it('should return the current card', () => {
+        assert.deepEqual(round.returnCurrentCard(), {
+            id: 1,
+            question: "What allows you to define a set of related information using key-value pairs?",
+            answers: ["object", "array", "function"],
+            correctAnswer: "object"
+          });
+    });
+
+    it('should return the current card after taking a turn', () => {
+        round.takeTurn();
+        assert.deepEqual(round.returnCurrentCard(), {
+            id: 2,
+            question: "What is a comma-separated list of related values?",
+            answers: ["array", "object", "function"],
+            correctAnswer: "array"
+          });
+    });
+
+    it('should start the turn count at 0', () => {
+        assert.equal(round.turnCount, 0);
+    });
+
+    it('should update the turn count after taking turn', () => {
+        assert.equal(round.turnCount, 0);
+        round.takeTurn();
+        assert.equal(round.turnCount, 1);
+        round.takeTurn();
+        round.takeTurn();
+        assert.equal(round.turnCount, 3);
+    });
+
+    it('should evaluate guess if incorrect', () => {
+        round.takeTurn('otter');
+        
+        assert.deepEqual(round.incorrectGuessIds, [1]);
+        assert.deepEqual(round.correctGuessIds, []);
+    });
+
+    it('should give feedback after taking turn', () => {
+        assert.equal(round.takeTurn('otter'), 'incorrect!');
+    });
+
+    it('should evaluate guess if correct', () => {
+        round.takeTurn('object');
+
+        assert.deepEqual(round.incorrectGuessIds, []);
+        assert.deepEqual(round.correctGuessIds, [1]);
+    });
+
+    it('should evaluate guess for different card', () => {
+        round.takeTurn('object');
+
+        assert.deepEqual(round.incorrectGuessIds, []);
+        assert.deepEqual(round.correctGuessIds, [1]);
+
+        round.takeTurn("array");
+
+        assert.deepEqual(round.incorrectGuessIds, []);
+        assert.deepEqual(round.correctGuessIds, [1, 2]);
+
+        round.takeTurn('array');
+
+        assert.deepEqual(round.incorrectGuessIds, [3]);
+        assert.deepEqual(round.correctGuessIds, [1, 2]);
+    });
+
+    it('should calculate the percentage of correct guesses', () => {
+        assert.equal(round.calculatePercentageCorrect(), '0%');
+
+        round.takeTurn('object');
+
+        assert.equal(round.calculatePercentageCorrect(), '100%');
+
+        round.takeTurn('array');
+
+        assert.equal(round.calculatePercentageCorrect(), '100%');
+
+        round.takeTurn('array');
+
+        assert.equal(round.calculatePercentageCorrect(), '67%');
+
+    })
+
+});
