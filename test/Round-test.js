@@ -153,7 +153,7 @@ describe('Round', () => {
         round.takeTurn('array');
         round.takeTurn('array')
 
-        assert.equal(console.log(round.endRound()), '**Round over!** You answered 67% of the questions correctly!');
+        assert.equal(round.endRound(), '**Round over!** You answered 67% of the questions correctly!');
     });
 
 });
