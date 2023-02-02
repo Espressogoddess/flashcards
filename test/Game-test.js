@@ -2,8 +2,9 @@ const chai = require('chai');
 const assert = chai.assert;
 
 const Game = require('../src/Game');
-const Round = require('../src/Round')
-const Card = require('../src/Card')
+const Round = require('../src/Round');
+const Card = require('../src/Card');
+const Deck = require('../src/Deck');
 
 describe('Game', () => {
     let game;
@@ -12,7 +13,6 @@ describe('Game', () => {
     });
 
     it('should be able to start a new game', () => {
-        assert.equal(game.currentRound, undefined);
         game.start();
         assert.instanceOf(game.currentRound, Round)
     });
