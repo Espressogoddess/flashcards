@@ -21,53 +21,19 @@ describe('Round', () => {
     });
 
     it('should have a deck property', () => {
-        assert.deepEqual(round.deck, [
-            {
-            id: 1,
-            question: "What allows you to define a set of related information using key-value pairs?",
-            answers: ["object", "array", "function"],
-            correctAnswer: "object"
-          }, {
-            id: 2,
-            question: "What is a comma-separated list of related values?",
-            answers: ["array", "object", "function"],
-            correctAnswer: "array"
-          }, {
-            id: 3,
-            question: "What type of prototype method directly modifies the existing array?",
-            answers: ["mutator method", "accessor method", "iteration method"],
-            correctAnswer: "mutator method"
-          }
-        ]);
-    });
-
-    it('should have a current card', () => {
-        assert.deepEqual(round.currentCard, {
-            id: 1,
-            question: "What allows you to define a set of related information using key-value pairs?",
-            answers: ["object", "array", "function"],
-            correctAnswer: "object"
-          });
+        assert.instanceOf(round.deck, Deck);
+        assert.equal(round.deck.countCards(), 3);
     });
 
     it('should return the current card', () => {
-        assert.deepEqual(round.returnCurrentCard(), {
-            id: 1,
-            question: "What allows you to define a set of related information using key-value pairs?",
-            answers: ["object", "array", "function"],
-            correctAnswer: "object"
-          });
+        assert.equal(round.returnCurrentCard(), card1);
     });
 
-    it('should return the current card after taking a turn', () => {
+    it('should update the current card after taking a turn', () => {
         round.takeTurn();
-        assert.deepEqual(round.returnCurrentCard(), {
-            id: 2,
-            question: "What is a comma-separated list of related values?",
-            answers: ["array", "object", "function"],
-            correctAnswer: "array"
-          });
+        assert.equal(round.returnCurrentCard(), card2);
     });
+
 
     it('should start the turn count at 0', () => {
         assert.equal(round.turnCount, 0);
@@ -82,7 +48,7 @@ describe('Round', () => {
         assert.equal(round.turnCount, 3);
     });
 
-    it('should evaluate guess if incorrect', () => {
+    it('should record cardIds for incorrect guesses', () => {
         round.takeTurn('otter');
 
         assert.deepEqual(round.incorrectGuessIds, [1]);
@@ -93,7 +59,7 @@ describe('Round', () => {
         assert.equal(round.takeTurn('otter'), 'incorrect!');
     });
 
-    it('should evaluate guess if correct', () => {
+    it('should record card Ids if guess is correct', () => {
         round.takeTurn('object');
 
         assert.deepEqual(round.incorrectGuessIds, []);
