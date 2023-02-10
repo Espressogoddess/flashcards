@@ -4,7 +4,7 @@
 This app allows users to play a "game" through the CLI (command line interface). The user is able to select which answer they want to guess. At the end of the round, the user is able to see what percentage of questions they answered correctly.
 
 ### App Preview:
-![](src/flashcards.mov)
+![](src/flashcards.gif)
 
 ### Technologies Used:
 - Object Oriented Javascript
